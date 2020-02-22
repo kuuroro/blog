@@ -4,7 +4,7 @@ date: 2019-08-31 12:09:46
 tags:
 ---
 
-# 一 WebRTC基础介绍
+# 一、WebRTC基础介绍
 ## 什么是webRTC
 WebRTC 全称是（Web browsers with Real-Time Communications (RTC)
 大概2011年，谷歌收购了 GIPS，它是一个为 RTC 开发出许多组件的公司，例如编解码和回声消除技术。Google 开源了 GIPS 开发的技术，并希望将其打造为行业标准。
@@ -77,7 +77,7 @@ RTCDataChannel可以建立浏览器之间的点对点通讯。常用的通讯方
 
 
 
-# 二 浏览器的音视频采集及设备管理
+# 二、浏览器的音视频采集及设备管理
 ## 音视频采集基本概念
 
 在讲浏览器提供的用JS 采集音视频API之前，需要先了解音视频采集的基本概念。
@@ -379,8 +379,8 @@ function shareDesktop(){
 
 以上就是浏览器端WebRTC通过设备采集音视频数据及其播放与录制的相关介绍。有了数据，接下来才可以使用WebRTC来实现实时音视频通讯。
 
-# 信令通道服务
-# WebRTC数据传输协议-UDP/RTP/RTCP
+# 三、信令通道服务
+# 四、WebRTC数据传输协议-UDP/RTP/RTCP
 
 ## 音视频数据传输：UDP还是TCP？
 
@@ -484,7 +484,7 @@ RTP报文有多种类型：
 3. RTP将RTP 数据包发往UDP端口对中偶数端口；RTCP将RTCP控制包发往UDP端口对中的接收端口。
 
 
-# SDP详解
+# 五、会话描述协议 SDP详解
 
 ## 什么是SDP？
 SDP 全称 Session Description Protocal，直译就是通用会话描述协议。
@@ -593,7 +593,7 @@ address：IP 地址。
 WebRTC 按功能将 SDP 划分成了五部分，即会话元数据、网络描述、流描述、安全描述以及服务质量描述。WebRTC SDP 中的会话元数据（Session Metadata）其实就是 SDP 标准规范中的会话层描述；流描述、网络描述与 SDP 标准规范中的媒体层描述是一致的；而安全描述与服务质量描述都是新增的一些属性描述。
 
 
-# WebRTC媒体协商Offer & Answer
+# 六、WebRTC媒体协商Offer & Answer
 
 ## 什么是媒体协商
 
@@ -622,21 +622,21 @@ WebRTC 按功能将 SDP 划分成了五部分，即会话元数据、网络描�
 1. 发起端创建 Offer & 收到 Offer。
 ```javascript
 //local
-var pc_local = new RTCPeerConnection(otps1);
+const pc_local = new RTCPeerConnection(otps1);
 pc_local.createOffer((offer)=>{
-        pc_local.setLocalDescription(offer);
-        singalChannel.send(offer)
+  pc_local.setLocalDescription(offer);
+  singalChannel.send(offer)
 }, handleError);
 ```
 
 2. 应答放收到offer
 ```javascript
 //remote
-var pc_remote = new RTCPeerConnection(otps2);
+const pc_remote = new RTCPeerConnection(otps2);
 signalChannel.on('message',(message)=>{
-        if(message.type==='offer'){
-            pc_remote.setRemoteDescription(new RTCSessionDescription(message))
-        }
+  if(message.type==='offer'){
+      pc_remote.setRemoteDescription(new RTCSessionDescription(message))
+  }
 })
 ```
 
@@ -644,8 +644,8 @@ signalChannel.on('message',(message)=>{
 ```javascript
 //remote
 pc_remote.createAnswer((answer)=>{
-        pc_remote.setLocalDescription(answer);
-        singalChannel.send(answer);
+    pc_remote.setLocalDescription(answer);
+    singalChannel.send(answer);
 }, handleError );
 ```
 
@@ -660,7 +660,7 @@ signalChannel.on('message',(message)=>{
 ```
 以上整个协商才算完成，之后 WebRTC 才会在浏览器底层会收集 Candidate，并进行连通性检测，最后进行ICE连接和媒体数据传输。
 
-# WebRTC的NAT打洞与连接：STUN/TUN/ICE
+# 七、WebRTC的NAT打洞与连接：STUN/TUN/ICE
 ## 什么是NAT
 
 或许你在前一段时间听闻IPv4地址枯竭的新闻，IPv4地址只有32位长，理论最多42.9亿条。大概在94年时候，提出了**IP网络地址转换（NAT）**RFC规范，作为一个临时方案来解决IPv4地址枯竭的问题。
@@ -834,7 +834,7 @@ ICE Candidate 主要分为以下三种类型：
 
 **总结：ICE 就是包括 STUN、TURN 协议的一套框架，用于找到一条可用且最优传输数据通道连接。**
 
-# WebRTC核心API之RTCPeerConnection
+# 八、WebRTC核心API之RTCPeerConnection
 
 ## 什么是RTCPeerConnection
 
@@ -1048,6 +1048,54 @@ pc.oniceconnectionstatechange = function(event) {
 
 理解RTCPeerConnection 类，如果从使用的角度看，RTCPeerConnection 是一个接口类；如果从功能的角度看，它又是一个功能聚合类。
 
-# WebRTC网络传输协议及安全加密
-# WebRTC的质量分析
-# 多人音视频通讯的常见架构
+# 九、WebRTC的安全机制
+
+## DLTS协议
+我们都知道 HTTPS 的底层最初是使用 SSL协议（Secure Sockets Layer）进行数据加密。IETF 对 SSL 3.0进行标准化，并且增加新功能，才有了TLS 1.0（Transport Layer Security，安全传输层协议）。
+
+TLS 协议由 TLS 记录协议和 TLS 握手协议组成：
+
+* TLS 记录协议，用于数据的加密、数据完整性检测等；
+* TLS 握手协议，主要用于密钥的交换与身份的确认。
+
+TLS底层基于TCP协议，但WebRTC音视频数据传输基于UDP协议，因此无法直接使用TLS。因此有了基于UDP 协议之上的简化版本的 TLS，那就是DTLS。
+
+在 WebRTC 中为了有效地保护音视频数据，使用 DTLS 协议交换公钥证书，并确认使用的密码算法，这个过程在 DTLS 协议中称为握手协议。
+
+
+* 首先 DTLS 协议采用 C/S 模式进行通信，其中发起请求的一端为客户端，接收请求的为服务端。
+* 客户端向服务端发送 ClientHello 消息，服务端收到请求后，回 ServerHello 消息，并将自己的证书发送给客户端，同时请求客户端证书。
+* 客户端收到证书后，将自己的证书发给服务端，并让服务端确认加密算法。
+* 服务端确认加密算法后，发送 Finished 消息，至此握手结束。
+* DTLS 握手结束之后，通信双方就可以开始相互发送音视频数据了。
+
+![](./img/2020-02-22-23-03-17.png)
+![](2020-02-22-23-03-17.png)
+
+## WebRTC身份辨别校验
+通过 DTLS 协议解决了交换公钥时可能被窃取的问题，但在多人音视频场景中，还需要解决辨别身份的问题。
+
+在WebRTC中，需要通过信令服务交换SDP，其中就包含身份验证的所需要信息：
+
+```
+a=ice-ufrag:khLS
+a=ice-pwd:cxLzteJaJBou3DspNaPsJhlQ
+a=fingerprint:sha-256 FA:14:42:3B:C7:97:1B:E8:AE:0C2:71:03:05:05:16:8F:B9:C7:98:E9:60:43:4B:5B:2C:28:EE:5C:8F3...
+```
+
+ice-ufrag 和 ice-pwd 相当于用户名和密码。fingerprint 它是存放公钥证书的指纹，在通过 ice-ufrag 和 ice-pwd 验证用户的合法性之外，还通过它对收到的证书做验证。
+
+## SRTP/SRTCP 
+
+由于RTP/RTCP协议并没有对传输的负载数据 进行任何保护，也就是说可能会在传输工程中被抓包工具抓取，所以仍然存在不安全因素。因此WebRTC使用了SRTP/SRTCP 协议 ，即安全的 RTP/RTCP 协议。
+
+**WebRTC使用有名的 libsrtp 库将原来的 RTP/RTCP 协议数据转换成 SRTP/SRTCP 协议数据**，主要分为以下几步：
+
+* 初始化libsrtp。
+* 创建Session (指定会话过程中的策略，如：算法进行内容的完整性检测，解码时的公钥等等)。
+* 对 RTP包 加密，传输为 SRTP包。
+* 对 SRTP包 解密，得到 RTP包。
+* 最后是释放资源。
+
+# 十、WebRTC的质量分析
+# 十一、多人音视频通讯的常见架构
