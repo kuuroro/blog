@@ -7,13 +7,13 @@ title: Hexo
 subtitle: ''
 description: ''
 keywords:
-author: John Doe
-language: en
+author: Kuuroro Chan
+language: zn
 timezone: ''
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
+url: http://kuuroro.com
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -99,4 +99,6 @@ theme: indigo
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/kuuroro/kuuroro.github.io.git
+  repo: 
+    gitee: https://gitee.com/kuuroro/blog.git,master
+    github: https://github.com/kuuroro/kuuroro.github.io.git,master
