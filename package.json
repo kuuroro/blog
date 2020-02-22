@@ -8,7 +8,7 @@
     "deploy": "hexo deploy",
     "server": "hexo server",
     "sortimg":"node sortImage.js",
-    "gitpush":"git add .&git commit -m 'update'&git push",
+    "gitpush":"git add . & git commit -m 'update' & git push",
     "p": "run-s sortimg gitpush build deploy"
   },
   "hexo": {
