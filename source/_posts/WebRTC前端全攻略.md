@@ -1046,7 +1046,7 @@ pc.oniceconnectionstatechange = function(event) {
 
 **4. currentLocalDescripiton 、currentRemoteDescription**：当前设置的本地/远端SDP
 
-理解RTCPeerConnection 类，如果从使用的角度看，RTCPeerConnection 是一个接口类；如果从功能的角度看，它又是一个功能聚合类。
+**理解RTCPeerConnection 类，如果从使用的角度看，RTCPeerConnection 是一个接口类；如果从功能的角度看，它又是一个功能聚合类。**
 
 # 九、WebRTC的安全机制
 

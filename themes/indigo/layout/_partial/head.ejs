@@ -52,6 +52,18 @@
     <% } %>
     <%- favicon_tag(theme.favicon) %>
     <link rel="stylesheet" href="<%- url_for(theme_css('/css/style', cache)) %>">
+    <style>
+        .post-content strong{
+            color: #333!important
+        }
+        .img-lightbox img{
+            max-width: 85%;
+        }
+        .post-content > .highlight, .post-content > .image-bubble, .post-content > pre{
+            margin-left: 0;
+            margin-right:0;
+        }
+    </style>
     <script>window.lazyScripts=[]</script>
 
     <!-- custom head -->
