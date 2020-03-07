@@ -103,7 +103,8 @@ getUserMedia 方法在浏览器中访问音视频设备非常简单。
 ```javascript
 var promise = navigator.mediaDevices.getUserMedia(constraints);
 ```
-
+![](/img/2020-02-29-18-33-40.png)
+![](2020-02-29-18-33-40.png)
 结果会通过**Promise**返回stream，用URL.createObjectURL/srcObject转换后，设置为Video或Audio元素的src属性来进行播放。
 
 失败时promise catchError 可能的异常有：
@@ -196,8 +197,8 @@ MediaDeviceInfo，它表示的是每个输入 / 输出设备的信息:
 ```javascript
 MediaDevices.enumerateDevices().then((deviceList)=>{console.log(deviceList)})
 ```
-![](./img/2020-02-21-10-59-35.png) 
-![](2020-02-21-10-59-35.png) 
+![](./img/2020-02-29-18-34-57.png)
+![](2020-02-29-18-34-57.png)
 
 通过调用`navigator.MediaDevices.enumerateDevices() `返回每一个 MediaDeviceInfo，并将每个 MediaDeviceInfo 中的基本信息打印出来，也就是我们想要的每个音视频设备的基本信息。
 
@@ -1098,4 +1099,37 @@ ice-ufrag 和 ice-pwd 相当于用户名和密码。fingerprint 它是存放公�
 * 最后是释放资源。
 
 # 十、WebRTC的质量分析
+
+WebRTC流（音频，视频或数据）在传输过程中，会因为网络不稳定的而丢失。在实际的复杂的网络环境中，这种不稳定往往时刻影响WebRTC的音视频质量。因此WebRTC在底层已经实现对网络传输质量的监控和评估能力（例如：实时码率、丢包率，视频帧率等），并以此去实时动态调节和优化传输策略。
+
+## WebRTC所监控质量数据
+
+当你在浏览器使用WebRTC的时候，并且在地址栏输入：'chrome://webrtc-internals'，就能看到webrtc所监控的质量数据。
+
+![](./img/2020-02-29-20-10-28.png)
+![](2020-02-29-20-10-28.png)
+
+* 打开后，在视图最顶端可以看到默认用 标准API 展示统计信息。（也可以选用传统老式API展示）。
+
+* 选取对应页面指定的RTCPeerConnection。
+* 可以看到：诸如“Stats Graphs”各项实时质量图表，诸如"RTCMediaStream_Track_receiver"代表接收的音视频轨信息。
+
+**音频轨监控图表**
+包含：，audioLevel，以及音频采样信息等。
+![](./img/2020-02-29-20-10-46.png)
+![](2020-02-29-20-10-46.png)
+
+
+**视频轨监控图表**
+包含：帧的宽高信息，接收帧数，解码帧数，丢弃帧数等。
+![](./img/2020-02-29-20-11-19.png)
+![](2020-02-29-20-11-19.png)
+
+## getStat API 获取浏览器质量数据
+
+
+getStats是WebRTC非常重要的API之一，开发者通过它获取WebRTC实时运行的状态信息，包括网络数据收发状态、P2P客户端媒体数据采集和渲染状态等。这些对于监控WebRTC运行状态、排除程序错误等非常重要。
+
+
+
 # 十一、多人音视频通讯的常见架构
