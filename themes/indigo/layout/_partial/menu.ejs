@@ -10,7 +10,8 @@
         </a>
         <hgroup class="introduce">
           <h5 class="nickname"><%- config.author %></h5>
-          <%- mail_to(theme.email, theme.email, {class: 'mail'}) %>
+          <span class="mail">个人&nbsp; </span> <%- mail_to(theme.email, theme.email, {class: 'mail'}) %><br/>
+          <span class="mail"><%- theme.company_name %>&nbsp; </span> <%- mail_to(theme.company_email, theme.company_email, {class: 'mail'}) %>
         </hgroup>
       </div>
     </div>

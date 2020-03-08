@@ -38,7 +38,10 @@ brand: /img/brand.jpg
 favicon: /favicon.ico
 
 # email
-email: javenchen_sz@163.com 腾讯
+email: javenchen_sz@163.com
+
+company_name: 腾讯
+company_email: javenwwchen@tencent.com
 
 # 设置 Android L Chrome 浏览器状态栏颜色
 color: '#3F51B5'
