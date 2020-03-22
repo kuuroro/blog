@@ -116,19 +116,20 @@ navigator.mediaDevices.getUserMedia(constraints)
 在获取腾讯云WebRTC签名进房时，还要对”只收看“和”要上台发言“的两部分学生，区分调整权限参数。
 
 ```javascript
+//抽象代码
 const WEBRTCRIGHTFLAG = {
     ALL: 255, // 所有权限，可以上行
     WATCH: 171, // 只能下行
 };
 
  const params = {
-    uint32_sdk_appid: CLOUDSDKAPPID,
-    uint32_term_id: termId,
+    sdk_appid: CLOUDSDKAPPID,
+    term_id: termId,
     // 判断只是收看，还是需要互动上麦
     uint64_want_privilege_map: !this.needGetAllRight ? WEBRTCRIGHTFLAG.WATCH : WEBRTCRIGHTFLAG.ALL,
-    uint32_platform: PLATFORM.WEB,
+    platform: PLATFORM.WEB,
 };
-const getSigUrl = `/cgi-proxy/txcloud/GetTlsPrivilege?${serializeUrlParameFromObj(params)}`;
+const getSigUrl = `获取签名的CGI请求地址`;
 
 keFetch(getSigUrl, {
     method: 'GET',
@@ -143,6 +144,7 @@ keFetch(getSigUrl, {
 
 最后结合举手业务流程和上麦的SDK调用流程，梳理总结出下面的流程图：
 
+![](./img/2020-03-10-00-14-18.png)
 ![](2020-03-10-00-14-18.png)
 
 
