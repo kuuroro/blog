@@ -9,7 +9,7 @@
     "server": "hexo server",
     "sortimg":"node sortImage.js",
     "gitpush":"git add . & git commit -m 'update' & git push",
-    "p": "run-s sortimg build deploy"
+    "p": "run-s build deploy"
   },
   "hexo": {
     "version": "4.2.0"

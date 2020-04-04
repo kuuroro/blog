@@ -100,5 +100,4 @@ theme: indigo
 deploy:
   type: git
   repo: 
-    gitee: https://gitee.com/kuuroro/blog.git,master
     github: https://github.com/kuuroro/kuuroro.github.io.git,master

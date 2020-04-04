@@ -36,10 +36,7 @@ tags:
 
 ### 浏览器 getUserMedia 采集音视频
 
-其实目前大部分浏览器都支持调用系统硬件设备（如麦克风、摄像头）来进行音视频的录制。这就需要通过浏览器API  `navigator.mediaDevices.getUserMedia`，来拿到本地媒体流。以下WebRTC SDK相关代码：
-
-![](2020-03-08-22-09-39.png)
-
+其实目前大部分浏览器都支持调用系统硬件设备（如麦克风、摄像头）来进行音视频的录制。这就需要通过浏览器API  `navigator.mediaDevices.getUserMedia`，来拿到本地媒体流。
 
 其中 参数 constraints 是约束，如只采集麦克风音频或摄像头视频，你可以这么设置：
 
@@ -73,7 +70,7 @@ const mediaStreamContrains = {
 
 当然`navigator.mediaDevices.getUserMedia`并不保证能一定获取到媒体数据。和APP调用系统权限一样，浏览器器会弹出询问提示窗口来索取权限。
 
-
+![](./img/2020-03-08-22-27-17.png)
 ![](2020-03-08-22-27-17.png)
 
 异常情况包含以下几种：
@@ -93,6 +90,7 @@ const mediaStreamContrains = {
 因为学生上麦只需要音频，因此constraints将audio设为true即可，获取流后添加到**上行的RTCPeerConnection**中。
 
 ```javascript
+// 已抽离业务逻辑，获取麦克风设备，并上行音频流的代码
 const constraints = { audio:true }
 
 navigator.mediaDevices.getUserMedia(constraints)
@@ -116,20 +114,19 @@ navigator.mediaDevices.getUserMedia(constraints)
 在获取腾讯云WebRTC签名进房时，还要对”只收看“和”要上台发言“的两部分学生，区分调整权限参数。
 
 ```javascript
-//抽象代码
+//抽象代码，非实际代码
 const WEBRTCRIGHTFLAG = {
-    ALL: 255, // 所有权限，可以上行
-    WATCH: 171, // 只能下行
+    ALL, // 所有权限，可以上行
+    WATCH, // 只能下行
 };
 
  const params = {
-    sdk_appid: CLOUDSDKAPPID,
-    term_id: termId,
-    // 判断只是收看，还是需要互动上麦
-    uint64_want_privilege_map: !this.needGetAllRight ? WEBRTCRIGHTFLAG.WATCH : WEBRTCRIGHTFLAG.ALL,
+    sdkAppId: sdkAppId,
+    roomId,
+    right: WEBRTCRIGHTFLAG.WATCH |WEBRTCRIGHTFLAG.ALL,
     platform: PLATFORM.WEB,
 };
-const getSigUrl = `获取签名的CGI请求地址`;
+const getUserSigUrl = `获取签名的CGI请求地址`;
 
 keFetch(getSigUrl, {
     method: 'GET',
@@ -223,6 +220,7 @@ TXWebRTCAPI.on("onRemoveStream", (event)=>{
 
 短时间内专门做一个快直播播放器并不现实，只能在原有播放器做**增量适配改造**。
 
+![](./img/2020-03-09-13-12-14.png)
 ![](2020-03-09-13-12-14.png)
 
 改造思路：蓝色为新增。
@@ -278,6 +276,7 @@ setInterval(() => {
 ```
 3. 加入丢包率与卡顿率上报：SDK调用浏览getStats API获取WebRTC报告数据，对`packetLost`、`packetsReceived`、`interframeDelay`这些核心度量数据做收集。快直播SDK每2s抛出质量数据，但由于web侧几十万同时在线数，频繁上报带来会带较大大压力。因此基于质量数据做60s的前端合并计算后， 再进行上报。
 
+![](./img/2020-03-09-14-07-10.png)
 ![](2020-03-09-14-07-10.png)
 ```
 type: "stream_quality"
@@ -322,11 +321,9 @@ interFrameDelayMax: 136
 
 ## 写在最后
 
-对于音视频前端小分队而言，以上提到的只是小小一部分。在超哥带领下快速完成包括：协调扩容，流控降级策略，完善监控，日志排查，体验优化和改进，并同各位同事一起遇到问题就解决问题。
+对于音视频前端小分队而言，以上提到的只是小小一部分，还包包括：协调扩容，流控降级策略，完善监控，日志排查，体验优化和改进，并同各位同事一起遇到问题就解决问题。
 
 随着腾讯课堂PCU不断突破新高，仅Web浏览器端就有近60万的同时在线上课高峰。
-
-最后特别提及 jayccchen 超哥、lizzydeng 邓雪，以及各位OED开发同学和腾讯云同事日以继日加班加点的付出，保证了此次腾讯课堂高峰课web端上课的音视频质量。
 
 PS：
  如果有想同我们深入研究、共同探索 web 音视频的同学，欢迎加入我们 **IMWeb 团队**。在线教育部有许多音视频场景，期待你施展拳脚，感兴趣的同学可以直接联系我。
